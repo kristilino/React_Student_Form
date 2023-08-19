@@ -8,35 +8,29 @@ const Form = (props) => {
     const[name, setName] = useState(" ");
     const[favStack, setFavStack] = useState(" ");
     const[smart, setSmart] = useState(false); 
-    const[error, setError] = useState(false); 
-    const[errorMessage, setErrormessage] = useState(false); 
+    const[errorMessage, setErrorMessage] = useState(" "); 
 
 
     const submitHandler = (e) => {
-        e.preventDefault();  //nuk ben faqa refresh pasi i japim sumbmit 
+        e.preventDefault();  
      
-
-
-if (name.length > 0 && name.length < 3) {
-    setError(true)
-    setErrormessage("Please Complete everything!")
+if(name.length <3 || favStack === " ") {
+    setErrorMessage("Your form has some unsolved issues!")
 }
 
-if(!error) {
-    setStudentList([...studentList,         //po perodruim set dhe nje objekt te ruajme te dhenat qe do
-    // marrim nga forma, kete funksion e vendsim brenda funksionit qe 
-    //krijuma qe na ruan te dhenat pasi i bejme submt 
+else {
+    setStudentList([...studentList,  
 
 {
 name: name,
 favStack: favStack,
 smart: smart,
-
+id: Math.floor(Math.random()*10000).toString(), 
 }])
 
-setName("");
-setFavStack("");
-setSmart(false);
+setName(" ");
+setFavStack(" ");
+setErrorMessage(" ");  
 
 }
 }
@@ -46,18 +40,23 @@ setSmart(false);
 
 <div className="form">
 <h1>Create a Student</h1>
+{
+
+errorMessage?
+<p>{errorMessage}</p>:
+null
+
+}
+
 <form  onSubmit={(e)=>submitHandler(e)}>
             <div>
                   <label>Name: </label>
                    <input type="text" value={name} onChange={(e)=> setName(e.target.value)} placeholder="Enter the student name " />
             </div>
  
-             {
-                name.length > 0 && name.length < 3 ?
-                <p className="red"> The name should be 3 characters or more</p> :
+             {name.length > 0 && name.length < 3?
+                <p className="red"> The name should be 3 characters or more</p>:
                 null 
-                
-                
                  }
 
             <div>
@@ -78,13 +77,7 @@ setSmart(false);
                    <input type="checkbox" checked={smart} onChange={(e)=>setSmart(!smart)} />
             </div>
 
-{error?
-<button>  Create the student </button>:
- <button disabled>  Create the student </button>
-
-}
-
-     
+<button>  Create the student </button>
 
 </form>
 
